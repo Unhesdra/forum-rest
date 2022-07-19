@@ -81,8 +81,5 @@ public class Topic {
 	public List<Response> getResponses() {
 		return responses;
 	}
-	
-	
-	
 
 }
