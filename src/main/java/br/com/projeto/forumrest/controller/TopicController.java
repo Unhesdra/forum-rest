@@ -1,8 +1,11 @@
 package br.com.projeto.forumrest.controller;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -18,7 +21,7 @@ public class TopicController {
 	public TopicService topicService;
 	
 	@PostMapping("/createTopic")
-	public ResponseEntity<TopicDto> createTopic(TopicForm topicForm) {
+	public ResponseEntity<TopicDto> createTopic(@RequestBody @Valid TopicForm topicForm) {
 		TopicDto topicDto = topicService.createTopic(topicForm);
 		return ResponseEntity.ok(topicDto);
 	}
