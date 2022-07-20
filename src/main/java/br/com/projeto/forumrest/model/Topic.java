@@ -1,6 +1,7 @@
 package br.com.projeto.forumrest.model;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Entity;
@@ -26,7 +27,7 @@ public class Topic {
 	@ManyToOne
 	private ForumSubject subject;
 	@OneToMany(mappedBy = "topic")
-	private List<Response> responses;
+	private List<Response> responses = new ArrayList<>();;
 	@Enumerated(EnumType.STRING)
 	private TopicStatus topicStatus = TopicStatus.NEW;
 	
