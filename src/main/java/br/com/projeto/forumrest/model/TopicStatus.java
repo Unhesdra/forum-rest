@@ -1,6 +1,8 @@
 package br.com.projeto.forumrest.model;
 
 public enum TopicStatus {
-	NOT_ANSWERED
-
+	NEW,
+	OPEN,
+	SOLVED,
+	CLOSED
 }

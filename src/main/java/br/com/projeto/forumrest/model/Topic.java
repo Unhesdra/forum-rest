@@ -20,7 +20,7 @@ public class Topic {
 	private Long id;
 	private String title;
 	private String message;
-	private LocalDateTime postDate;
+	private LocalDateTime postDate = LocalDateTime.now();
 	@ManyToOne
 	private ForumUser user;
 	@ManyToOne
@@ -28,7 +28,7 @@ public class Topic {
 	@OneToMany(mappedBy = "topic")
 	private List<Response> responses;
 	@Enumerated(EnumType.STRING)
-	private TopicStatus topicStatus;
+	private TopicStatus topicStatus = TopicStatus.NEW;
 	
 	public Topic() {		
 	}
@@ -38,8 +38,6 @@ public class Topic {
 		this.message = message;
 		this.user = user;
 		this.subject = subject;
-		this.postDate = LocalDateTime.now();
-		this.topicStatus = TopicStatus.NOT_ANSWERED;
 	}
 
 	public String getTitle() {
@@ -80,6 +78,10 @@ public class Topic {
 
 	public List<Response> getResponses() {
 		return responses;
+	}
+	
+	public void addResponse(Response response) {
+		this.responses.add(response);
 	}
 
 }
