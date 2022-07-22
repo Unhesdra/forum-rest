@@ -1,23 +1,29 @@
 package br.com.projeto.forumrest.dto;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import br.com.projeto.forumrest.model.Topic;
 
-public class TopicDto {
+public class DetailedTopicDto {
 	
 	private String title;
 	private String message;
 	private LocalDateTime postDate;
 	private String username;
 	private String subject;
+	private List<ResponseDto> responses; 
 	
-	public TopicDto(Topic topic) {
+	public DetailedTopicDto(Topic topic) {
 		this.title = topic.getTitle();
 		this.message = topic.getMessage();
 		this.postDate = topic.getPostDate();
 		this.username = topic.getUser().getUsername();
-		this.subject = topic.getSubject().getSubject();		
+		this.subject = topic.getSubject().getSubject();
+		this.responses = topic.getResponses()
+				.stream()
+				.map(response -> new ResponseDto(response))
+				.toList();
 	}
 
 	public String getTitle() {
@@ -38,6 +44,10 @@ public class TopicDto {
 
 	public String getSubject() {
 		return subject;
+	}
+
+	public List<ResponseDto> getResponses() {
+		return responses;
 	}
 
 }
