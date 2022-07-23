@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import br.com.projeto.forumrest.dto.DetailedTopicDto;
 import br.com.projeto.forumrest.dto.TopicDto;
 import br.com.projeto.forumrest.form.TopicForm;
+import br.com.projeto.forumrest.form.UpdateForm;
 import br.com.projeto.forumrest.service.TopicService;
 
 @RestController
@@ -41,6 +43,12 @@ public class TopicController {
 	@PostMapping("/createTopic")
 	public ResponseEntity<TopicDto> createTopic(@RequestBody @Valid TopicForm topicForm) {
 		TopicDto topicDto = topicService.createTopic(topicForm);
+		return ResponseEntity.ok(topicDto);
+	}
+	
+	@PutMapping("/{id}")
+	public ResponseEntity<TopicDto> updateTopic(@PathVariable Long id, @RequestBody @Valid UpdateForm updateForm) {
+		TopicDto topicDto = topicService.updateTopic(id, updateForm);
 		return ResponseEntity.ok(topicDto);
 	}
 	

@@ -3,12 +3,15 @@ package br.com.projeto.forumrest.service;
 import java.util.List;
 import java.util.Optional;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import br.com.projeto.forumrest.dto.DetailedTopicDto;
 import br.com.projeto.forumrest.dto.TopicDto;
 import br.com.projeto.forumrest.form.TopicForm;
+import br.com.projeto.forumrest.form.UpdateForm;
 import br.com.projeto.forumrest.model.ForumSubject;
 import br.com.projeto.forumrest.model.ForumUser;
 import br.com.projeto.forumrest.model.Topic;
@@ -61,6 +64,26 @@ public class TopicService {
 		return new TopicDto(topic);
 	}
 	
+	@Transactional
+	public TopicDto updateTopic(Long id, UpdateForm updateForm) {
+		Optional<Topic> optionalTopic = topicRepository.findById(id);
+		if(optionalTopic.isPresent()) {
+			Optional<ForumSubject> optionalSubject = subjectRepository.findBySubject(updateForm.getSubject());
+			if(optionalSubject.isPresent()) {
+				Topic topic = optionalTopic.get();
+				topic.setTitle(updateForm.getTitle());
+				topic.setMessage(updateForm.getMessage());
+				topic.setSubject(optionalSubject.get());
+				TopicDto topicDto = new TopicDto(topic);
+				return topicDto;
+			}
+//			Implement custom Exception here
+			throw new RuntimeException("Subject cannot be found!");
+		}
+//		Implement custom Exception here
+		throw new RuntimeException("Topic cannot be found!");
+	}
+	
 	public TopicDto deleteTopic(Long id) {
 		Optional<Topic> optionalTopic = topicRepository.findById(id);
 		if(optionalTopic.isPresent()) {
@@ -71,5 +94,6 @@ public class TopicService {
 //		Implement custom Exception here
 		throw new RuntimeException("Topic cannot be found!");
 	}
+
 	
 }
