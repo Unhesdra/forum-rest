@@ -1,9 +1,18 @@
 package br.com.projeto.forumrest.form;
 
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+
 public class UpdateForm {
 	
+	@NotEmpty
+	@NotNull
 	private String title;
+	@NotEmpty
+	@NotNull
 	private String message;
+	@NotEmpty
+	@NotNull
 	private String subject;
 	
 	public UpdateForm(String title, String message, String subject) {
