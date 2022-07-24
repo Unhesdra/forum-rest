@@ -23,6 +23,11 @@ public class Response {
 	public Response() {
 	}
 	
+	public Response(String message, Topic topic) {
+		this.message = message;
+		this.topic = topic;
+	}
+	
 	public Response (String message) {
 		this.message = message;
 	}
