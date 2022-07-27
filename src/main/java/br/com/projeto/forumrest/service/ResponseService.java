@@ -9,10 +9,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import br.com.projeto.forumrest.dto.ResponseDto;
+import br.com.projeto.forumrest.entity.Response;
+import br.com.projeto.forumrest.entity.Topic;
+import br.com.projeto.forumrest.exception.ForumResponseNotFoundException;
+import br.com.projeto.forumrest.exception.ForumTopicNotFoundException;
 import br.com.projeto.forumrest.form.ResponseForm;
 import br.com.projeto.forumrest.form.UpdateResponseForm;
-import br.com.projeto.forumrest.model.Response;
-import br.com.projeto.forumrest.model.Topic;
 import br.com.projeto.forumrest.repository.ResponseRepository;
 import br.com.projeto.forumrest.repository.TopicRepository;
 
@@ -41,8 +43,7 @@ public class ResponseService {
 			ResponseDto responseDto = new ResponseDto(optionalResponse.get());
 			return responseDto;
 		}
-//		Implement custom Exception here!
-		throw new RuntimeException("Response cannot be found!");
+		throw new ForumResponseNotFoundException("Response cannot be found!");
 	}
 
 	public ResponseDto createResponse(ResponseForm responseForm) {
@@ -53,8 +54,7 @@ public class ResponseService {
 			responseRepository.save(response);
 			return new ResponseDto(response);
 		}
-//		Implement custom Exception here
-		throw new RuntimeException("Topic cannot be found!");
+		throw new ForumTopicNotFoundException("Topic cannot be found!");
 	}
 
 	@Transactional
@@ -69,8 +69,7 @@ public class ResponseService {
 			}
 			return new ResponseDto(response);
 		}
-//		Implement custom Exception here
-		throw new RuntimeException("Response cannot be found!");
+		throw new ForumResponseNotFoundException("Response cannot be found!");
 	}
 
 	public ResponseDto deteleResponse(Long id) {
@@ -81,8 +80,7 @@ public class ResponseService {
 			responseRepository.delete(response);
 			return responseDto;
 		}
-//		Implement custom Exception here
-		throw new RuntimeException("Response cannot be found!");
+		throw new ForumResponseNotFoundException("Response cannot be found!");
 	}
 
 }

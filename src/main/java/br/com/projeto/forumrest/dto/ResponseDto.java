@@ -2,7 +2,7 @@ package br.com.projeto.forumrest.dto;
 
 import java.time.LocalDateTime;
 
-import br.com.projeto.forumrest.model.Response;
+import br.com.projeto.forumrest.entity.Response;
 
 public class ResponseDto {
 	

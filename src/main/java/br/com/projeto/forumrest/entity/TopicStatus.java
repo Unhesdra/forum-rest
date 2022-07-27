@@ -1,4 +1,4 @@
-package br.com.projeto.forumrest.model;
+package br.com.projeto.forumrest.entity;
 
 public enum TopicStatus {
 	NEW,

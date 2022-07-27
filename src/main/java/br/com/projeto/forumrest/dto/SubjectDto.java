@@ -1,6 +1,6 @@
 package br.com.projeto.forumrest.dto;
 
-import br.com.projeto.forumrest.model.ForumSubject;
+import br.com.projeto.forumrest.entity.ForumSubject;
 
 public class SubjectDto {
 

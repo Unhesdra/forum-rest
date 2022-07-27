@@ -1,4 +1,4 @@
-package br.com.projeto.forumrest.model;
+package br.com.projeto.forumrest.entity;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;

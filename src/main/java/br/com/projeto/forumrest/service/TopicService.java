@@ -10,11 +10,13 @@ import org.springframework.stereotype.Service;
 
 import br.com.projeto.forumrest.dto.DetailedTopicDto;
 import br.com.projeto.forumrest.dto.TopicDto;
+import br.com.projeto.forumrest.entity.ForumSubject;
+import br.com.projeto.forumrest.entity.ForumUser;
+import br.com.projeto.forumrest.entity.Topic;
+import br.com.projeto.forumrest.exception.ForumSubjectNotFoundException;
+import br.com.projeto.forumrest.exception.ForumTopicNotFoundException;
 import br.com.projeto.forumrest.form.TopicForm;
 import br.com.projeto.forumrest.form.UpdateTopicForm;
-import br.com.projeto.forumrest.model.ForumSubject;
-import br.com.projeto.forumrest.model.ForumUser;
-import br.com.projeto.forumrest.model.Topic;
 import br.com.projeto.forumrest.repository.SubjectRepository;
 import br.com.projeto.forumrest.repository.TopicRepository;
 import br.com.projeto.forumrest.repository.UserRepository;
@@ -45,8 +47,7 @@ public class TopicService {
 			DetailedTopicDto detailedTopicDto = new DetailedTopicDto(optionalTopic.get());
 			return detailedTopicDto;
 		}
-//		Implement custom Exception here
-		throw new RuntimeException("Topic cannot be found!");
+		throw new ForumTopicNotFoundException("Topic cannot be found!");
 	}
 	
 	public TopicDto createTopic(TopicForm topicForm) {
@@ -78,10 +79,9 @@ public class TopicService {
 				return topicDto;
 			}
 //			Implement custom Exception here
-			throw new RuntimeException("Subject cannot be found!");
+			throw new ForumSubjectNotFoundException("Subject cannot be found!");
 		}
-//		Implement custom Exception here
-		throw new RuntimeException("Topic cannot be found!");
+		throw new ForumTopicNotFoundException("Topic cannot be found!");
 	}
 	
 	public TopicDto deleteTopic(Long id) {
@@ -91,8 +91,7 @@ public class TopicService {
 			topicRepository.deleteById(id);
 			return topicDto;
 		}
-//		Implement custom Exception here
-		throw new RuntimeException("Topic cannot be found!");
+		throw new ForumTopicNotFoundException("Topic cannot be found!");
 	}
 
 	

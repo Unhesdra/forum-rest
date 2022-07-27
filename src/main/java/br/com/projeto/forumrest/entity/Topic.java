@@ -1,4 +1,4 @@
-package br.com.projeto.forumrest.model;
+package br.com.projeto.forumrest.entity;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;

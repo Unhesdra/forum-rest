@@ -4,7 +4,7 @@ import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import br.com.projeto.forumrest.model.ForumUser;
+import br.com.projeto.forumrest.entity.ForumUser;
 
 public interface UserRepository extends JpaRepository<ForumUser, Long> {
 	

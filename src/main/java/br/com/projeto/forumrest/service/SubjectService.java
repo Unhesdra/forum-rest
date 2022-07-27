@@ -9,8 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import br.com.projeto.forumrest.dto.SubjectDto;
+import br.com.projeto.forumrest.entity.ForumSubject;
+import br.com.projeto.forumrest.exception.ForumSubjectNotFoundException;
 import br.com.projeto.forumrest.form.SubjectForm;
-import br.com.projeto.forumrest.model.ForumSubject;
 import br.com.projeto.forumrest.repository.SubjectRepository;
 
 @Service
@@ -42,8 +43,7 @@ public class SubjectService {
 			forumSubject.setSubject(subjectForm.getSubject());
 			return new SubjectDto(forumSubject);
 		}
-//		Implement custom Exception here!
-		throw new RuntimeException("Subject cannot be found!");
+		throw new ForumSubjectNotFoundException("Subject cannot be found!");
 	}
 
 	public SubjectDto deleteSubject(Long id) {
@@ -54,8 +54,7 @@ public class SubjectService {
 			subjectRepository.delete(subject);
 			return subjectDto;
 		}
-//		Implement custom Exception here!
-		throw new RuntimeException("Subject cannot be found!");
+		throw new ForumSubjectNotFoundException("Subject cannot be found!");
 	}
 	
 	
