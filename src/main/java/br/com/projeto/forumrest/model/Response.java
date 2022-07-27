@@ -18,7 +18,7 @@ public class Response {
 	@ManyToOne
 	private Topic topic;
 	private LocalDateTime postDate = LocalDateTime.now();
-	private Boolean solution = false;
+	private Boolean isSolution = false;
 	
 	public Response() {
 	}
@@ -40,12 +40,12 @@ public class Response {
 		this.message = message;
 	}
 
-	public Boolean getSolution() {
-		return solution;
+	public Boolean getIsSolution() {
+		return isSolution;
 	}
 
-	public void setSolution(Boolean solution) {
-		this.solution = solution;
+	public void setIsSolution(Boolean solution) {
+		this.isSolution = solution;
 	}
 
 	public Long getId() {

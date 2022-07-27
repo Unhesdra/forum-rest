@@ -6,14 +6,20 @@ import br.com.projeto.forumrest.model.Response;
 
 public class ResponseDto {
 	
+	private Long id;
 	private String message;
 	private LocalDateTime postDate;
 	private Boolean solution;
 	
 	public ResponseDto(Response response) {
+		this.id = response.getId();
 		this.message = response.getMessage();
 		this.postDate = response.getPostDate();
-		this.solution = response.getSolution();
+		this.solution = response.getIsSolution();
+	}
+
+	public Long getId() {
+		return id;
 	}
 
 	public String getMessage() {

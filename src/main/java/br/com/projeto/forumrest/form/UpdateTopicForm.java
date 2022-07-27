@@ -3,7 +3,7 @@ package br.com.projeto.forumrest.form;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
-public class UpdateForm {
+public class UpdateTopicForm {
 	
 	@NotEmpty
 	@NotNull
@@ -15,7 +15,7 @@ public class UpdateForm {
 	@NotNull
 	private String subject;
 	
-	public UpdateForm(String title, String message, String subject) {
+	public UpdateTopicForm(String title, String message, String subject) {
 		this.title = title;
 		this.message = message;
 		this.subject = subject;

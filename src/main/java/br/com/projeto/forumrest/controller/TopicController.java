@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import br.com.projeto.forumrest.dto.DetailedTopicDto;
 import br.com.projeto.forumrest.dto.TopicDto;
 import br.com.projeto.forumrest.form.TopicForm;
-import br.com.projeto.forumrest.form.UpdateForm;
+import br.com.projeto.forumrest.form.UpdateTopicForm;
 import br.com.projeto.forumrest.service.TopicService;
 
 @RestController
@@ -47,7 +47,7 @@ public class TopicController {
 	}
 	
 	@PutMapping("/{id}")
-	public ResponseEntity<TopicDto> updateTopic(@PathVariable Long id, @RequestBody @Valid UpdateForm updateForm) {
+	public ResponseEntity<TopicDto> updateTopic(@PathVariable Long id, @RequestBody @Valid UpdateTopicForm updateForm) {
 		TopicDto topicDto = topicService.updateTopic(id, updateForm);
 		return ResponseEntity.ok(topicDto);
 	}

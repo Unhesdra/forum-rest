@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 import br.com.projeto.forumrest.dto.DetailedTopicDto;
 import br.com.projeto.forumrest.dto.TopicDto;
 import br.com.projeto.forumrest.form.TopicForm;
-import br.com.projeto.forumrest.form.UpdateForm;
+import br.com.projeto.forumrest.form.UpdateTopicForm;
 import br.com.projeto.forumrest.model.ForumSubject;
 import br.com.projeto.forumrest.model.ForumUser;
 import br.com.projeto.forumrest.model.Topic;
@@ -65,7 +65,7 @@ public class TopicService {
 	}
 	
 	@Transactional
-	public TopicDto updateTopic(Long id, UpdateForm updateForm) {
+	public TopicDto updateTopic(Long id, UpdateTopicForm updateForm) {
 		Optional<Topic> optionalTopic = topicRepository.findById(id);
 		if(optionalTopic.isPresent()) {
 			Optional<ForumSubject> optionalSubject = subjectRepository.findBySubject(updateForm.getSubject());

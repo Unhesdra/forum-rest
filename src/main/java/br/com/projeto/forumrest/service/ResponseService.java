@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import br.com.projeto.forumrest.dto.ResponseDto;
 import br.com.projeto.forumrest.form.ResponseForm;
+import br.com.projeto.forumrest.form.UpdateResponseForm;
 import br.com.projeto.forumrest.model.Response;
 import br.com.projeto.forumrest.model.Topic;
 import br.com.projeto.forumrest.repository.ResponseRepository;
@@ -57,12 +58,27 @@ public class ResponseService {
 	}
 
 	@Transactional
-	public ResponseDto updateResponseStatus(Long id, Boolean isSolution) {
+	public ResponseDto updateResponseStatus(Long id, UpdateResponseForm updateForm) {
 		Optional<Response> optionalResponse = responseRepository.findById(id);
 		if(optionalResponse.isPresent()) {
 			Response response = optionalResponse.get();
-			response.setSolution(isSolution);
+			response.setIsSolution(updateForm.getIsSolution());
+			String newMessage = updateForm.getMessage();
+			if(newMessage != null && !newMessage.isBlank()) {
+				response.setMessage(updateForm.getMessage());
+			}
+			return new ResponseDto(response);
+		}
+//		Implement custom Exception here
+		throw new RuntimeException("Response cannot be found!");
+	}
+
+	public ResponseDto deteleResponse(Long id) {
+		Optional<Response> optionalResponse = responseRepository.findById(id);
+		if(optionalResponse.isPresent()) {
+			Response response = optionalResponse.get();
 			ResponseDto responseDto = new ResponseDto(response);
+			responseRepository.delete(response);
 			return responseDto;
 		}
 //		Implement custom Exception here
