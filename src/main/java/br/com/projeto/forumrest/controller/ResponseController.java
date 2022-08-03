@@ -13,11 +13,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.projeto.forumrest.dto.ResponseDto;
 import br.com.projeto.forumrest.form.ResponseForm;
-import br.com.projeto.forumrest.form.UpdateResponseForm;
 import br.com.projeto.forumrest.service.ResponseService;
 
 @RestController
@@ -45,9 +45,15 @@ public class ResponseController {
 		return ResponseEntity.ok(responseDto);
 	}
 	
-	@PutMapping("/{id}")
-	public ResponseEntity<ResponseDto> updateResponse(@PathVariable Long id, @RequestBody UpdateResponseForm updateForm) {
-		ResponseDto responseDto = responseService.updateResponseStatus(id, updateForm);
+	@PutMapping("/updateStatus/{id}")
+	public ResponseEntity<ResponseDto> updateResponseStatus(@PathVariable Long id, @RequestParam Boolean isSolution) {
+		ResponseDto responseDto = responseService.updateResponseStatus(id, isSolution);
+		return ResponseEntity.ok(responseDto);
+	}
+	
+	@PutMapping("/updateMessage/{id}")
+	public ResponseEntity<ResponseDto> updateResponseMessage(@PathVariable Long id, @RequestBody ResponseForm responseForm) {
+		ResponseDto responseDto = responseService.updateResponseMessage(id, responseForm);
 		return ResponseEntity.ok(responseDto);
 	}
 	

@@ -43,17 +43,24 @@ public class TopicService {
 	
 	public DetailedTopicDto getSpecificTopic(Long id) {
 		Optional<Topic> optionalTopic= topicRepository.findById(id);
-		if(optionalTopic.isPresent()) {
-			DetailedTopicDto detailedTopicDto = new DetailedTopicDto(optionalTopic.get());
-			return detailedTopicDto;
+		
+		if(optionalTopic.isEmpty()) {
+			throw new ForumTopicNotFoundException("Topic cannot be found!");
 		}
-		throw new ForumTopicNotFoundException("Topic cannot be found!");
+		DetailedTopicDto detailedTopicDto = new DetailedTopicDto(optionalTopic.get());
+		return detailedTopicDto;
 	}
 	
 	public TopicDto createTopic(TopicForm topicForm) {
 		
-		ForumUser user = userRepository.findByUsername("testuser").get();		
-		ForumSubject subject = subjectRepository.findBySubject("testsubject").get();
+		ForumUser user = userRepository.findByUsername("testuser").get();
+		Optional<ForumSubject> optionalSubject = subjectRepository.findById(topicForm.getSubject());
+		
+		if(optionalSubject.isEmpty()) {
+			throw new ForumSubjectNotFoundException("Subject cannot be found!");
+		}
+				
+		ForumSubject subject = optionalSubject.get();
 		
 		Topic topic =  new Topic(topicForm.getTitle(),
 				topicForm.getMessage(),
@@ -68,30 +75,36 @@ public class TopicService {
 	@Transactional
 	public TopicDto updateTopic(Long id, UpdateTopicForm updateForm) {
 		Optional<Topic> optionalTopic = topicRepository.findById(id);
-		if(optionalTopic.isPresent()) {
-			Optional<ForumSubject> optionalSubject = subjectRepository.findBySubject(updateForm.getSubject());
-			if(optionalSubject.isPresent()) {
-				Topic topic = optionalTopic.get();
-				topic.setTitle(updateForm.getTitle());
-				topic.setMessage(updateForm.getMessage());
-				topic.setSubject(optionalSubject.get());
-				TopicDto topicDto = new TopicDto(topic);
-				return topicDto;
-			}
-//			Implement custom Exception here
+		
+		if(optionalTopic.isEmpty()) {
+			throw new ForumTopicNotFoundException("Topic cannot be found!");
+		}
+
+		Optional<ForumSubject> optionalSubject = subjectRepository.findBySubject(updateForm.getSubject());
+		if(optionalSubject.isEmpty()) {
 			throw new ForumSubjectNotFoundException("Subject cannot be found!");
 		}
-		throw new ForumTopicNotFoundException("Topic cannot be found!");
+		
+		Topic topic = optionalTopic.get();
+		topic.setTitle(updateForm.getTitle());
+		topic.setMessage(updateForm.getMessage());
+		topic.setSubject(optionalSubject.get());
+		TopicDto topicDto = new TopicDto(topic);
+		
+		return topicDto;
 	}
 	
 	public TopicDto deleteTopic(Long id) {
 		Optional<Topic> optionalTopic = topicRepository.findById(id);
-		if(optionalTopic.isPresent()) {
-			TopicDto topicDto = new TopicDto(optionalTopic.get());
-			topicRepository.deleteById(id);
-			return topicDto;
+		
+		if(optionalTopic.isEmpty()) {
+			throw new ForumTopicNotFoundException("Topic cannot be found!");
 		}
-		throw new ForumTopicNotFoundException("Topic cannot be found!");
+		
+		TopicDto topicDto = new TopicDto(optionalTopic.get());
+		topicRepository.deleteById(id);
+		
+		return topicDto;
 	}
 
 	

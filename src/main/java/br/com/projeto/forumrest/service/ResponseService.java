@@ -14,7 +14,6 @@ import br.com.projeto.forumrest.entity.Topic;
 import br.com.projeto.forumrest.exception.ForumResponseNotFoundException;
 import br.com.projeto.forumrest.exception.ForumTopicNotFoundException;
 import br.com.projeto.forumrest.form.ResponseForm;
-import br.com.projeto.forumrest.form.UpdateResponseForm;
 import br.com.projeto.forumrest.repository.ResponseRepository;
 import br.com.projeto.forumrest.repository.TopicRepository;
 
@@ -58,14 +57,24 @@ public class ResponseService {
 	}
 
 	@Transactional
-	public ResponseDto updateResponseStatus(Long id, UpdateResponseForm updateForm) {
+	public ResponseDto updateResponseStatus(Long id, Boolean isSolution) {
 		Optional<Response> optionalResponse = responseRepository.findById(id);
 		if(optionalResponse.isPresent()) {
 			Response response = optionalResponse.get();
-			response.setIsSolution(updateForm.getIsSolution());
-			String newMessage = updateForm.getMessage();
+			response.setIsSolution(isSolution);
+			return new ResponseDto(response);
+		}
+		throw new ForumResponseNotFoundException("Response cannot be found!");
+	}
+	
+	@Transactional
+	public ResponseDto updateResponseMessage(Long id, ResponseForm responseForm) {
+		Optional<Response> optionalResponse = responseRepository.findById(id);
+		if(optionalResponse.isPresent()) {
+			Response response = optionalResponse.get();
+			String newMessage = responseForm.getMessage();					
 			if(newMessage != null && !newMessage.isBlank()) {
-				response.setMessage(updateForm.getMessage());
+				response.setMessage(newMessage);
 			}
 			return new ResponseDto(response);
 		}

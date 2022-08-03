@@ -11,14 +11,13 @@ public class TopicForm {
 	@NotEmpty
 	@NotNull
 	private String message;
-	@NotEmpty
 	@NotNull
-	private String subject;
+	private Long subjectId;
 	
-	public TopicForm(String title, String message, String subject) {
+	public TopicForm(String title, String message, Long subjectId) {
 		this.title = title;
 		this.message = message;
-		this.subject = subject;
+		this.subjectId = subjectId;
 	}
 	
 	public String getTitle() {
@@ -29,8 +28,8 @@ public class TopicForm {
 		return message;
 	}
 
-	public String getSubject() {
-		return subject;
+	public Long getSubject() {
+		return subjectId;
 	}
 
 }
