@@ -13,6 +13,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
+import br.com.projeto.forumrest.jwt.JwtTokenVerifierFilter;
 import br.com.projeto.forumrest.jwt.JwtUsernamePasswordAuthenticationFilter;
 
 @EnableWebSecurity
@@ -29,6 +30,7 @@ public class SecurityConfiguration {
 		.sessionManagement()
 			.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 		.and().addFilter(new JwtUsernamePasswordAuthenticationFilter(authenticationManager()))
+		.addFilterAfter(new JwtTokenVerifierFilter(), JwtUsernamePasswordAuthenticationFilter.class)
 		.authorizeRequests()
 		.antMatchers(HttpMethod.GET, "/topic/**").permitAll()
 		.anyRequest().authenticated();
