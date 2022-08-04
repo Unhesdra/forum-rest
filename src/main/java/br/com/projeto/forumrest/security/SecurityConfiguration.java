@@ -9,8 +9,11 @@ import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+
+import br.com.projeto.forumrest.jwt.JwtUsernamePasswordAuthenticationFilter;
 
 @EnableWebSecurity
 @Configuration
@@ -22,18 +25,13 @@ public class SecurityConfiguration {
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 		http
-		.authorizeHttpRequests((authz) -> {
-			try {
-				authz
-						.antMatchers(HttpMethod.GET, "/topic/**").permitAll()
-						.anyRequest()
-						.authenticated()
-						.and().formLogin();
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		});
+		.csrf().disable()
+		.sessionManagement()
+			.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+		.and().addFilter(new JwtUsernamePasswordAuthenticationFilter(authenticationManager()))
+		.authorizeRequests()
+		.antMatchers(HttpMethod.GET, "/topic/**").permitAll()
+		.anyRequest().authenticated();
 		
 		return http.build();
 	}
