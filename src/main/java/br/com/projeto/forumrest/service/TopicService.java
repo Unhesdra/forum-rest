@@ -1,5 +1,6 @@
 package br.com.projeto.forumrest.service;
 
+import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
 
@@ -51,7 +52,7 @@ public class TopicService {
 		return detailedTopicDto;
 	}
 	
-	public TopicDto createTopic(TopicForm topicForm) {
+	public TopicDto createTopic(TopicForm topicForm, Principal principal) {
 		
 		ForumUser user = userRepository.findByUsername("testuser").get();
 		Optional<ForumSubject> optionalSubject = subjectRepository.findById(topicForm.getSubject());

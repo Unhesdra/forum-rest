@@ -22,9 +22,11 @@ import io.jsonwebtoken.SignatureAlgorithm;
 public class JwtUsernamePasswordAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 	
 	private final AuthenticationManager authenticationManager;
+	private final JwtConfig jwtConfig;
 	
-	public JwtUsernamePasswordAuthenticationFilter(AuthenticationManager authenticationManager) {
+	public JwtUsernamePasswordAuthenticationFilter(AuthenticationManager authenticationManager, JwtConfig jwtConfig) {
 		this.authenticationManager = authenticationManager;
+		this.jwtConfig = jwtConfig;
 	}
 	
 	@Override
@@ -54,9 +56,9 @@ public class JwtUsernamePasswordAuthenticationFilter extends UsernamePasswordAut
 			Authentication authResult) throws IOException, ServletException {
 		
 		Date now = new Date();
-		Date expiration = new Date(now.getTime() + 900000L);
+		Date expiration = new Date(now.getTime() + jwtConfig.getTokenExpiration());
 		
-		String key = "rm'!@N=Ke!~p8VTA2ZRK~nMDQX5Uvm!m'D&]{@Vr?G;2?XhbC:Qa#9#eMLN\\\\}x3?JR3.2zr~v)gYF^8\\\\:8>:XfB:Ww75N/emt9Yj[bQMNCWwW\\\\J?N,nvH.<2\\\\.r~w]*e~vgak)X\\\"v8H`MH/7\\\"2E`,^k@n<vE-wD3g9JWPy;CrY*.Kd2_D])=><D?YhBaSua5hW%{2]_FVXzb9`8FH^b[X3jzVER&:jw2<=c38=>L/zBq`}C6tT*cCSVC^c]-L}&/";
+		String key = jwtConfig.getSecretKey();
 		
 		String token = Jwts.builder()
 				.setSubject(authResult.getName())
@@ -66,7 +68,7 @@ public class JwtUsernamePasswordAuthenticationFilter extends UsernamePasswordAut
 				.signWith(SignatureAlgorithm.HS256, key)
 				.compact();
 		
-		response.addHeader("Authorization", "Bearer " + token);
+		response.addHeader(jwtConfig.getAuthorizationHeader(), jwtConfig.getTokenPrefix() + token);
 	}
 
 }

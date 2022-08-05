@@ -13,6 +13,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
+import br.com.projeto.forumrest.jwt.JwtConfig;
 import br.com.projeto.forumrest.jwt.JwtTokenVerifierFilter;
 import br.com.projeto.forumrest.jwt.JwtUsernamePasswordAuthenticationFilter;
 
@@ -23,13 +24,16 @@ public class SecurityConfiguration {
 	@Autowired
 	private AuthenticationService authenticationService;
 	
+	@Autowired
+	private JwtConfig jwtConfig;
+	
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 		http
 		.csrf().disable()
 		.sessionManagement()
 			.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-		.and().addFilter(new JwtUsernamePasswordAuthenticationFilter(authenticationManager()))
+		.and().addFilter(new JwtUsernamePasswordAuthenticationFilter(authenticationManager(), jwtConfig))
 		.addFilterAfter(new JwtTokenVerifierFilter(), JwtUsernamePasswordAuthenticationFilter.class)
 		.authorizeRequests()
 		.antMatchers(HttpMethod.GET, "/topic/**").permitAll()

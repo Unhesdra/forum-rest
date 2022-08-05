@@ -11,6 +11,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -24,23 +25,26 @@ import io.jsonwebtoken.Jwts;
 
 public class JwtTokenVerifierFilter extends OncePerRequestFilter {
 	
+	@Autowired
+	private JwtConfig jwtConfig;
+	
 	@Override
 	protected void doFilterInternal(
 			HttpServletRequest request,
 			HttpServletResponse response,
 			FilterChain filterChain) throws ServletException, IOException {
 		
-		String authorizationHeader = request.getHeader("Authorization");
+		String authorizationHeader = request.getHeader(jwtConfig.getAuthorizationHeader());
 		
-		if (authorizationHeader == null || authorizationHeader.isEmpty() || !authorizationHeader.startsWith("Bearer ")) {
+		if (authorizationHeader == null || authorizationHeader.isEmpty() || !authorizationHeader.startsWith(jwtConfig.getTokenPrefix())) {
 			filterChain.doFilter(request, response);
 			return;
 		}
 		
-		String token = authorizationHeader.replaceAll("Bearer ", "");
+		String token = authorizationHeader.replaceAll(jwtConfig.getTokenPrefix(), "");
 		
 		try {
-			String key = "rm'!@N=Ke!~p8VTA2ZRK~nMDQX5Uvm!m'D&]{@Vr?G;2?XhbC:Qa#9#eMLN\\\\}x3?JR3.2zr~v)gYF^8\\\\:8>:XfB:Ww75N/emt9Yj[bQMNCWwW\\\\J?N,nvH.<2\\\\.r~w]*e~vgak)X\\\"v8H`MH/7\\\"2E`,^k@n<vE-wD3g9JWPy;CrY*.Kd2_D])=><D?YhBaSua5hW%{2]_FVXzb9`8FH^b[X3jzVER&:jw2<=c38=>L/zBq`}C6tT*cCSVC^c]-L}&/";
+			String key = jwtConfig.getSecretKey();
 			
 			Jws<Claims> claimsJws = Jwts.parser()
 				.setSigningKey(key)

@@ -1,5 +1,6 @@
 package br.com.projeto.forumrest.controller;
 
+import java.security.Principal;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -41,8 +42,8 @@ public class TopicController {
 	}
 	
 	@PostMapping("/createTopic")
-	public ResponseEntity<TopicDto> createTopic(@RequestBody @Valid TopicForm topicForm) {
-		TopicDto topicDto = topicService.createTopic(topicForm);
+	public ResponseEntity<TopicDto> createTopic(@RequestBody @Valid TopicForm topicForm, Principal principal) {
+		TopicDto topicDto = topicService.createTopic(topicForm, principal);
 		return ResponseEntity.ok(topicDto);
 	}
 	
