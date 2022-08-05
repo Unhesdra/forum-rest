@@ -49,7 +49,7 @@ public class ResponseService {
 		Optional<Topic> optionalTopic = topicRepository.findById(responseForm.getTopicId());
 		if(optionalTopic.isPresent()) {
 			Topic topic = optionalTopic.get();
-			Response response = new Response(responseForm.getMessage(), topic);
+			Response response = new Response(responseForm.getMessage(), topic, null);
 			responseRepository.save(response);
 			return new ResponseDto(response);
 		}

@@ -23,7 +23,7 @@ public class Topic {
 	private String message;
 	private LocalDateTime postDate = LocalDateTime.now();
 	@ManyToOne
-	private ForumUser user;
+	private ForumUser author;
 	@ManyToOne
 	private ForumSubject subject;
 	@OneToMany(mappedBy = "topic")
@@ -34,10 +34,10 @@ public class Topic {
 	public Topic() {		
 	}
 	
-	public Topic(String title, String message, ForumUser user, ForumSubject subject) {
+	public Topic(String title, String message, ForumUser author, ForumSubject subject) {
 		this.title = title;
 		this.message = message;
-		this.user = user;
+		this.author = author;
 		this.subject = subject;
 	}
 
@@ -73,8 +73,8 @@ public class Topic {
 		return postDate;
 	}
 
-	public ForumUser getUser() {
-		return user;
+	public ForumUser getAuthor() {
+		return author;
 	}
 
 	public List<Response> getResponses() {

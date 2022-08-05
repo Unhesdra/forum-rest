@@ -16,6 +16,8 @@ public class Response {
 	private Long id;
 	private String message;
 	@ManyToOne
+	private ForumUser author;
+	@ManyToOne
 	private Topic topic;
 	private LocalDateTime postDate = LocalDateTime.now();
 	private Boolean isSolution = false;
@@ -23,9 +25,10 @@ public class Response {
 	public Response() {
 	}
 	
-	public Response(String message, Topic topic) {
+	public Response(String message, Topic topic, ForumUser author) {
 		this.message = message;
 		this.topic = topic;
+		this.author = author;
 	}
 	
 	public Response (String message) {
@@ -58,6 +61,10 @@ public class Response {
 
 	public LocalDateTime getPostDate() {
 		return postDate;
+	}
+
+	public ForumUser getAuthor() {
+		return author;
 	}
 	
 }

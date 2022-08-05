@@ -18,7 +18,7 @@ public class DetailedTopicDto {
 		this.title = topic.getTitle();
 		this.message = topic.getMessage();
 		this.postDate = topic.getPostDate();
-		this.username = topic.getUser().getUsername();
+		this.username = topic.getAuthor().getUsername();
 		this.subject = topic.getSubject().getSubject();
 		this.responses = topic.getResponses()
 				.stream()
