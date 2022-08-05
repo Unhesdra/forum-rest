@@ -14,6 +14,7 @@ import br.com.projeto.forumrest.dto.TopicDto;
 import br.com.projeto.forumrest.entity.ForumSubject;
 import br.com.projeto.forumrest.entity.ForumUser;
 import br.com.projeto.forumrest.entity.Topic;
+import br.com.projeto.forumrest.exception.ForumAuthorNotFoundException;
 import br.com.projeto.forumrest.exception.ForumSubjectNotFoundException;
 import br.com.projeto.forumrest.exception.ForumTopicNotFoundException;
 import br.com.projeto.forumrest.form.TopicForm;
@@ -54,12 +55,19 @@ public class TopicService {
 	
 	public TopicDto createTopic(TopicForm topicForm, Principal principal) {
 		
-		ForumUser user = userRepository.findByUsername("testuser").get();
+		Optional<ForumUser> optionalUser = userRepository.findByUsername(principal.getName());
+		
+		if(optionalUser.isEmpty()) {
+			throw new ForumAuthorNotFoundException("Topic author cannot be found!");
+		}
+		
 		Optional<ForumSubject> optionalSubject = subjectRepository.findById(topicForm.getSubject());
 		
 		if(optionalSubject.isEmpty()) {
 			throw new ForumSubjectNotFoundException("Subject cannot be found!");
 		}
+		
+		ForumUser user = optionalUser.get();
 				
 		ForumSubject subject = optionalSubject.get();
 		

@@ -11,6 +11,9 @@ public class JwtConfig {
 	private String secretKey;
 	private String tokenPrefix;
 	private Long tokenExpiration;
+	
+	public JwtConfig() {
+	}
 
 	public String getSecretKey() {
 		return secretKey;

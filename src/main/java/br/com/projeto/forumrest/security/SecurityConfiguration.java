@@ -34,7 +34,7 @@ public class SecurityConfiguration {
 		.sessionManagement()
 			.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 		.and().addFilter(new JwtUsernamePasswordAuthenticationFilter(authenticationManager(), jwtConfig))
-		.addFilterAfter(new JwtTokenVerifierFilter(), JwtUsernamePasswordAuthenticationFilter.class)
+		.addFilterAfter(new JwtTokenVerifierFilter(jwtConfig), JwtUsernamePasswordAuthenticationFilter.class)
 		.authorizeRequests()
 		.antMatchers(HttpMethod.GET, "/topic/**").permitAll()
 		.anyRequest().authenticated();
