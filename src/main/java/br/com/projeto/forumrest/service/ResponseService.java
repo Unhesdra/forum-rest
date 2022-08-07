@@ -47,13 +47,14 @@ public class ResponseService {
 
 	public ResponseDto createResponse(ResponseForm responseForm) {
 		Optional<Topic> optionalTopic = topicRepository.findById(responseForm.getTopicId());
-		if(optionalTopic.isPresent()) {
-			Topic topic = optionalTopic.get();
-			Response response = new Response(responseForm.getMessage(), topic, null);
-			responseRepository.save(response);
-			return new ResponseDto(response);
+		if(optionalTopic.isEmpty()) {
+			throw new ForumTopicNotFoundException("Topic cannot be found!");
 		}
-		throw new ForumTopicNotFoundException("Topic cannot be found!");
+
+		Topic topic = optionalTopic.get();
+		Response response = new Response(responseForm.getMessage(), topic, null);
+		responseRepository.save(response);
+		return new ResponseDto(response);
 	}
 
 	@Transactional
@@ -70,26 +71,28 @@ public class ResponseService {
 	@Transactional
 	public ResponseDto updateResponseMessage(Long id, ResponseForm responseForm) {
 		Optional<Response> optionalResponse = responseRepository.findById(id);
-		if(optionalResponse.isPresent()) {
-			Response response = optionalResponse.get();
-			String newMessage = responseForm.getMessage();					
-			if(newMessage != null && !newMessage.isBlank()) {
-				response.setMessage(newMessage);
-			}
-			return new ResponseDto(response);
+		if(optionalResponse.isEmpty()) {
+			throw new ForumResponseNotFoundException("Response cannot be found!");
 		}
-		throw new ForumResponseNotFoundException("Response cannot be found!");
+
+		Response response = optionalResponse.get();
+		String newMessage = responseForm.getMessage();					
+		if(newMessage != null && !newMessage.isBlank()) {
+			response.setMessage(newMessage);
+		}
+		return new ResponseDto(response);
 	}
 
 	public ResponseDto deteleResponse(Long id) {
 		Optional<Response> optionalResponse = responseRepository.findById(id);
-		if(optionalResponse.isPresent()) {
-			Response response = optionalResponse.get();
-			ResponseDto responseDto = new ResponseDto(response);
-			responseRepository.delete(response);
-			return responseDto;
+		if(optionalResponse.isEmpty()) {
+			throw new ForumResponseNotFoundException("Response cannot be found!");
 		}
-		throw new ForumResponseNotFoundException("Response cannot be found!");
+		
+		Response response = optionalResponse.get();
+		ResponseDto responseDto = new ResponseDto(response);
+		responseRepository.delete(response);
+		return responseDto;
 	}
 
 }
