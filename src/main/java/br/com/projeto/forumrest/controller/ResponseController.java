@@ -1,5 +1,6 @@
 package br.com.projeto.forumrest.controller;
 
+import java.security.Principal;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -40,26 +41,26 @@ public class ResponseController {
 	}
 	
 	@PostMapping("/createResponse")
-	public ResponseEntity<ResponseDto> createResponse(@RequestBody @Valid ResponseForm responseForm) {
-		ResponseDto responseDto = responseService.createResponse(responseForm);
+	public ResponseEntity<ResponseDto> createResponse(@RequestBody @Valid ResponseForm responseForm, Principal principal) {
+		ResponseDto responseDto = responseService.createResponse(responseForm, principal);
 		return ResponseEntity.ok(responseDto);
 	}
 	
 	@PutMapping("/updateStatus/{id}")
-	public ResponseEntity<ResponseDto> updateResponseStatus(@PathVariable Long id, @RequestParam Boolean isSolution) {
-		ResponseDto responseDto = responseService.updateResponseStatus(id, isSolution);
+	public ResponseEntity<ResponseDto> updateResponseStatus(@PathVariable Long id, @RequestParam Boolean isSolution, Principal principal) {
+		ResponseDto responseDto = responseService.updateResponseStatus(id, isSolution, principal);
 		return ResponseEntity.ok(responseDto);
 	}
 	
 	@PutMapping("/updateMessage/{id}")
-	public ResponseEntity<ResponseDto> updateResponseMessage(@PathVariable Long id, @RequestBody ResponseForm responseForm) {
-		ResponseDto responseDto = responseService.updateResponseMessage(id, responseForm);
+	public ResponseEntity<ResponseDto> updateResponseMessage(@PathVariable Long id, @RequestBody ResponseForm responseForm, Principal principal) {
+		ResponseDto responseDto = responseService.updateResponseMessage(id, responseForm, principal);
 		return ResponseEntity.ok(responseDto);
 	}
 	
 	@DeleteMapping("/{id}")
-	public ResponseEntity<ResponseDto> deleteResponse(@PathVariable Long id) {
-		ResponseDto responseDto = responseService.deteleResponse(id);
+	public ResponseEntity<ResponseDto> deleteResponse(@PathVariable Long id, Principal principal) {
+		ResponseDto responseDto = responseService.deteleResponse(id, principal);
 		return ResponseEntity.ok(responseDto);
 	}
 
