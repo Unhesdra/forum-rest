@@ -1,8 +1,8 @@
 package br.com.projeto.forumrest.entity;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -29,7 +29,7 @@ public class ForumUser implements UserDetails {
 	private Boolean isCredentialNonExpired;
 	private Boolean isEnabled;
 	@ManyToMany(fetch = FetchType.EAGER)
-	private List<ForumUserProfile> userProfileList = new ArrayList<>();
+	private Set<ForumUserProfile> userProfileList = new HashSet<>();
 	
 	public ForumUser() {		
 	}

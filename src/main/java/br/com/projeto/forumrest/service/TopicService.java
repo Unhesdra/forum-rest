@@ -17,6 +17,7 @@ import br.com.projeto.forumrest.entity.Topic;
 import br.com.projeto.forumrest.exception.ForumAuthorNotFoundException;
 import br.com.projeto.forumrest.exception.ForumSubjectNotFoundException;
 import br.com.projeto.forumrest.exception.ForumTopicNotFoundException;
+import br.com.projeto.forumrest.exception.LoggedUserIsNotAuthorException;
 import br.com.projeto.forumrest.form.TopicForm;
 import br.com.projeto.forumrest.form.UpdateTopicForm;
 import br.com.projeto.forumrest.repository.SubjectRepository;
@@ -49,6 +50,7 @@ public class TopicService {
 		if(optionalTopic.isEmpty()) {
 			throw new ForumTopicNotFoundException("Topic cannot be found!");
 		}
+		
 		DetailedTopicDto detailedTopicDto = new DetailedTopicDto(optionalTopic.get());
 		return detailedTopicDto;
 	}
@@ -82,7 +84,7 @@ public class TopicService {
 	}
 	
 	@Transactional
-	public TopicDto updateTopic(Long id, UpdateTopicForm updateForm) {
+	public TopicDto updateTopic(Long id, UpdateTopicForm updateForm, Principal principal) {
 		Optional<Topic> optionalTopic = topicRepository.findById(id);
 		
 		if(optionalTopic.isEmpty()) {
@@ -90,11 +92,24 @@ public class TopicService {
 		}
 
 		Optional<ForumSubject> optionalSubject = subjectRepository.findBySubject(updateForm.getSubject());
+		
 		if(optionalSubject.isEmpty()) {
 			throw new ForumSubjectNotFoundException("Subject cannot be found!");
 		}
 		
+		Optional<ForumUser> optionalUser = userRepository.findByUsername(principal.getName());
+		
+		if(optionalUser.isEmpty()) {
+			throw new ForumAuthorNotFoundException("Topic author cannot be found!");
+		}
+		
 		Topic topic = optionalTopic.get();
+		ForumUser forumUser = optionalUser.get();
+		
+		if(forumUser.getId() != topic.getAuthor().getId()) {
+			throw new LoggedUserIsNotAuthorException("Cannot update topic, because current user is not the author!");
+		}
+		
 		topic.setTitle(updateForm.getTitle());
 		topic.setMessage(updateForm.getMessage());
 		topic.setSubject(optionalSubject.get());
@@ -103,14 +118,27 @@ public class TopicService {
 		return topicDto;
 	}
 	
-	public TopicDto deleteTopic(Long id) {
+	public TopicDto deleteTopic(Long id, Principal principal) {
 		Optional<Topic> optionalTopic = topicRepository.findById(id);
 		
 		if(optionalTopic.isEmpty()) {
 			throw new ForumTopicNotFoundException("Topic cannot be found!");
 		}
 		
-		TopicDto topicDto = new TopicDto(optionalTopic.get());
+		Optional<ForumUser> optionalUser = userRepository.findByUsername(principal.getName());
+		
+		if(optionalUser.isEmpty()) {
+			throw new ForumAuthorNotFoundException("Topic author cannot be found!");
+		}
+		
+		Topic topic = optionalTopic.get();
+		ForumUser forumUser = optionalUser.get();
+		
+		if(forumUser.getId() != topic.getAuthor().getId()) {
+			throw new LoggedUserIsNotAuthorException("Cannot delete topic, because current user is not the author!");
+		}
+		
+		TopicDto topicDto = new TopicDto(topic);
 		topicRepository.deleteById(id);
 		
 		return topicDto;

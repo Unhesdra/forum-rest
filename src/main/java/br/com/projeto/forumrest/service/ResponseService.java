@@ -26,8 +26,8 @@ public class ResponseService {
 	@Autowired
 	private TopicRepository topicRepository;
 
-	public List<ResponseDto> getResponseList() {
-		List<Response> responseList = responseRepository.findAll();
+	public List<ResponseDto> getResponseList(Long topicId) {
+		List<Response> responseList = responseRepository.findAllTopicResponses(topicId);
 		List<ResponseDto> responseDtoList = responseList
 				.stream()
 				.map(response -> new ResponseDto(response))

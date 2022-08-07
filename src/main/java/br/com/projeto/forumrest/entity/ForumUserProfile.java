@@ -29,7 +29,7 @@ public class ForumUserProfile implements GrantedAuthority {
 
 	@Override
 	public String getAuthority() {
-		return authority;
+		return "ROLE_" + authority;
 	}
 	
 	public void setAuthority(String authority) {

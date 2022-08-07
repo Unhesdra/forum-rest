@@ -28,8 +28,8 @@ public class ResponseController {
 	private ResponseService responseService;
 	
 	@GetMapping("/listResponse")
-	public ResponseEntity<List<ResponseDto>> getResponseList() {
-		List<ResponseDto> responseDtoList = responseService.getResponseList();
+	public ResponseEntity<List<ResponseDto>> getResponseList(@RequestParam Long topicId) {
+		List<ResponseDto> responseDtoList = responseService.getResponseList(topicId);
 		return ResponseEntity.ok(responseDtoList);
 	}
 	

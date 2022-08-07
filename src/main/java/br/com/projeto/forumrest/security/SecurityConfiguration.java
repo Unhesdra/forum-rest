@@ -37,6 +37,9 @@ public class SecurityConfiguration {
 		.addFilterAfter(new JwtTokenVerifierFilter(jwtConfig), JwtUsernamePasswordAuthenticationFilter.class)
 		.authorizeRequests()
 		.antMatchers(HttpMethod.GET, "/topic/**").permitAll()
+		.antMatchers(HttpMethod.GET, "/subject/**").permitAll()
+		.antMatchers(HttpMethod.GET, "/response/**").permitAll()
+		.antMatchers("/subject/**").hasRole("ADMIN")
 		.anyRequest().authenticated();
 		
 		return http.build();
