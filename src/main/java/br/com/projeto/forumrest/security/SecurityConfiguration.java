@@ -40,6 +40,7 @@ public class SecurityConfiguration {
 		.antMatchers(HttpMethod.GET, "/subject/**").permitAll()
 		.antMatchers(HttpMethod.GET, "/response/**").permitAll()
 		.antMatchers("/subject/**").hasRole("ADMIN")
+		.antMatchers("/user/**").hasRole("ADMIN")
 		.anyRequest().authenticated();
 		
 		return http.build();
