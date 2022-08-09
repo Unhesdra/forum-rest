@@ -6,11 +6,8 @@ import java.util.Set;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
-public class NewUserForm {
-
-	@NotNull
-	@NotEmpty
-	private String username;
+public class UpdateUserForm {
+	
 	@NotNull
 	@NotEmpty
 	private String email;
@@ -21,15 +18,10 @@ public class NewUserForm {
 	@NotEmpty
 	private Set<Long> userProfileIdSet = new HashSet<>();
 	
-	public NewUserForm(String username, String email, String password, Set<Long> userProfileIdSet) {
-		this.username = username;
+	public UpdateUserForm(String email, String password, Set<Long> userProfileSet) {
 		this.email = email;
 		this.password = password;
-		this.userProfileIdSet = userProfileIdSet;
-	}
-	
-	public String getUsername() {
-		return username;
+		this.userProfileIdSet = userProfileSet;
 	}
 	
 	public String getEmail() {
@@ -43,5 +35,5 @@ public class NewUserForm {
 	public Set<Long> getUserProfileIdSet() {
 		return userProfileIdSet;
 	}
-	
+
 }

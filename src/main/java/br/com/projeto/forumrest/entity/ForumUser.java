@@ -29,15 +29,16 @@ public class ForumUser implements UserDetails {
 	private Boolean isCredentialNonExpired;
 	private Boolean isEnabled;
 	@ManyToMany(fetch = FetchType.EAGER)
-	private Set<ForumUserProfile> userProfileList = new HashSet<>();
+	private Set<ForumUserProfile> userProfileSet = new HashSet<>();
 	
 	public ForumUser() {		
 	}
 	
-	public ForumUser (String username, String email, String password) {
+	public ForumUser (String username, String email, String password, Set<ForumUserProfile> userProfileSet) {
 		this.username = username;
 		this.email = email;
 		this.password = password;
+		this.userProfileSet = userProfileSet;
 		this.isAccountNonExpired = true;
 		this.isAccountNonLocked = true;
 		this.isCredentialNonExpired = true;
@@ -64,6 +65,14 @@ public class ForumUser implements UserDetails {
 	public Long getId() {
 		return id;
 	}
+	
+	public void clearUserProfileSet() {
+		userProfileSet.clear();
+	}
+	
+	public void addUserProfile(ForumUserProfile forumUserProfile) {
+		userProfileSet.add(forumUserProfile);
+	}
 
 	@Override
 	public String getUsername() {
@@ -72,7 +81,7 @@ public class ForumUser implements UserDetails {
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-		return userProfileList;
+		return userProfileSet;
 	}
 
 	@Override
